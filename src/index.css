@@ -57,6 +57,7 @@ p {
 }
 
 /* Link */
+
 a {
   text-decoration: none;
 }
@@ -82,5 +83,3 @@ a {
     font-size: 1.5rem;
   }
 }
-
-/* Badge */
