@@ -5,12 +5,16 @@ on:
     branches:
       - master
 
+permissions:
+  contents: write
+  pull-requests: write
+
+
 jobs:
-  release:
+  release-please:
     runs-on: ubuntu-latest
     steps:
-      - name: csh-ui-release-action
-        uses: snrakshith/release-action@v1
+      - uses: google-github-actions/release-please-action@v3
         with:
-          github-token: ${{ secrets.GRAVITY_UI_BOT_GITHUB_TOKEN }}
-          npm-token: ${{ secrets.GRAVITY_UI_BOT_NPM_TOKEN }}
+          release-type: node
+          package-name: release-please-action
