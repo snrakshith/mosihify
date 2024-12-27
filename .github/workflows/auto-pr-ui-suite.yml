@@ -3,30 +3,50 @@ name: Auto PR for UI Suite Branches
 on:
   push:
     branches:
-      - "ut/suite-for-ui-*"
-
-  workflow_dispatch: # Allow manual triggers
+      - "ut/suite-for-ui-*"  # Trigger on push to any branch matching this pattern
+      
+  workflow_dispatch:  # Allow manual triggers via GitHub UI
 
 jobs:
-  auto-pr:
+  createPullRequest:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout the repository
+        uses: actions/checkout@v4  
 
-      - name: Set up Git
-        run: |
-          git config --global user.name "snrakshith"
-          git config --global user.email "snrakshith@users.noreply.github.com"
-
-      - name: Create or Update Pull Request
-        uses: peter-evans/create-pull-request@v5
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.BOT_TOKEN }}
-          base: develop
-          head: ${{ github.ref_name }}
-          title: "Auto PR: ${{ github.ref_name }}"
+          commit-message: 'Update test suite for improvements'
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          title: '[Test Suite Update] Improvements and Fixes'
           body: |
-            This pull request was automatically created by winson-ai.
-            Branch: ${{ github.ref_name }}
-            Target: develop
+            This pull request contains updates and fixes for the UI suite branch:
+            - Enhanced UI components for better performance.
+            - Fixed minor UI bugs and improved design consistency.
+
+          labels: |
+            ui-update
+            automated-pr
+          assignees: ${{ github.actor }}  # Assignee can be the actor or another user/team
+          reviewers: ui-team  # Replace with your team or specific user reviewers
+          milestone: 1  # Optional, set if needed
+          draft: false  # Set to true if you want the PR to be in draft mode
+          branch: ui-suite-update  # Branch name to create the PR against
+          delete-branch: true  # Automatically delete the branch after PR merge
+
+      - name: Check output
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+
+      - name: Add reaction
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          repository: ${{ github.repository }}
+          comment-id: ${{ github.event.client_payload.comment.id }}
+          reaction-type: hooray
