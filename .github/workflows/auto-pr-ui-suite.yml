@@ -1,0 +1,32 @@
+name: Auto PR for UI Suite Branches
+
+on:
+  push:
+    branches:
+      - "ut/suite-for-ui-*"
+
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  auto-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "winson-ai"
+          git config --global user.email "winson-ai@users.noreply.github.com"
+
+      - name: Create or Update Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+          base: develop
+          head: ${{ github.ref_name }}
+          title: "Auto PR: ${{ github.ref_name }}"
+          body: |
+            This pull request was automatically created by winson-ai.
+            Branch: ${{ github.ref_name }}
+            Target: develop
