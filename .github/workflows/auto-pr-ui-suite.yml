@@ -3,7 +3,7 @@ name: Auto PR for UI Suite Branches
 on:
   push:
     branches:
-      - "ut/suite-for-ui-[0-9]+"
+      - "ut/suite-for-ui-1"
 
   workflow_dispatch: # Allow manual triggers
 
