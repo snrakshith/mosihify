@@ -16,8 +16,8 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --global user.name "winson-ai"
-          git config --global user.email "winson-ai@users.noreply.github.com"
+          git config --global user.name "snrakshith"
+          git config --global user.email "snrakshith@users.noreply.github.com"
 
       - name: Create or Update Pull Request
         uses: peter-evans/create-pull-request@v5
