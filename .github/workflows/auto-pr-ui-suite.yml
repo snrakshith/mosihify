@@ -3,7 +3,7 @@ name: Auto PR for UI Suite Branches
 on:
   push:
     branches:
-      - "ut/suite-for-ui-1"
+      - "ut/suite-for-ui-*"
 
   workflow_dispatch: # Allow manual triggers
 
@@ -18,6 +18,12 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Debug Branch Info
+        run: |
+          echo "Triggered branch: ${{ github.ref_name }}"
+          echo "Full event details:"
+          cat $GITHUB_EVENT_PATH
 
       - name: Check for existing PR
         id: check-pr
