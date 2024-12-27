@@ -35,7 +35,7 @@ jobs:
           assignees: snrakshith  # ${{ github.actor }}  # Assignee can be the actor or another user/team
           reviewers: snrakshith  # Replace with your team or specific user reviewers
           # milestone: 1  # Optional, set if needed
-          draft: false  # Set to true if you want the PR to be in draft mode
+          draft: true  # Set to true if you want the PR to be in draft mode
           branch: develop  # Branch name to create the PR against
           delete-branch: false  # Automatically delete the branch after PR merge
 
