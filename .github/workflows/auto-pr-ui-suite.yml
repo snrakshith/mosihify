@@ -3,7 +3,7 @@ name: Auto PR for UI Suite Branches
 on:
   push:
     branches:
-      - "ut/suite-for-ui-[0-9]+"
+      - "ut/suite-for-ui-*"
 
   workflow_dispatch: # Allow manual triggers
 
@@ -16,25 +16,17 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "winson-ai"
+          git config --global user.email "winson-ai@users.noreply.github.com"
 
-      - name: Check for existing PR
-        id: check-pr
-        uses: peter-evans/close-pull-request@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          search-query: "repo:${{ github.repository }} is:pr is:open head:${{ github.ref_name }} base:develop"
-
-      - name: Create Pull Request
-        if: steps.check-pr.outputs.closed_count == 0
+      - name: Create or Update Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.BOT_TOKEN }}
           base: develop
           head: ${{ github.ref_name }}
           title: "Auto PR: ${{ github.ref_name }}"
           body: |
-            This pull request was automatically created by a GitHub Action.
+            This pull request was automatically created by winson-ai.
             Branch: ${{ github.ref_name }}
             Target: develop
